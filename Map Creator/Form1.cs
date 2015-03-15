@@ -92,7 +92,7 @@ namespace Map_Creator
             //Make sure the name is valid
             if (node.name.Length == 0)
             {
-                MessageBox.Show("Name length must contain at least one character.");
+                MessageBox.Show("Name must contain at least one character.");
                 return;
             }
 
