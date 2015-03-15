@@ -46,9 +46,30 @@
             this.infoPanel = new System.Windows.Forms.Panel();
             this.infoTreeView = new System.Windows.Forms.TreeView();
             this.configurationPanel = new System.Windows.Forms.Panel();
+            this.nodesPanel = new System.Windows.Forms.Panel();
+            this.roadsPanel = new System.Windows.Forms.Panel();
+            this.areasPanel = new System.Windows.Forms.Panel();
+            this.invisbileNodeCheckBox = new System.Windows.Forms.CheckBox();
+            this.invisibleRoadCheckBox = new System.Windows.Forms.CheckBox();
+            this.roadCostLabel = new System.Windows.Forms.Label();
+            this.costUpDown = new System.Windows.Forms.NumericUpDown();
+            this.trafficUpDown = new System.Windows.Forms.NumericUpDown();
+            this.trafficCostLabel = new System.Windows.Forms.Label();
+            this.areasList = new System.Windows.Forms.ListBox();
+            this.areaUpDown = new System.Windows.Forms.NumericUpDown();
+            this.addAreaToNodeButton = new System.Windows.Forms.Button();
+            this.areasLabel = new System.Windows.Forms.Label();
+            this.addAreaButton = new System.Windows.Forms.Button();
             this.topMenuStrip.SuspendLayout();
             this.itemsPanel.SuspendLayout();
             this.infoPanel.SuspendLayout();
+            this.configurationPanel.SuspendLayout();
+            this.nodesPanel.SuspendLayout();
+            this.roadsPanel.SuspendLayout();
+            this.areasPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.costUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trafficUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.areaUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // topMenuStrip
@@ -121,6 +142,7 @@
             this.itemsPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.itemsPanel.BackColor = System.Drawing.Color.Red;
+            this.itemsPanel.Controls.Add(this.addAreaButton);
             this.itemsPanel.Controls.Add(this.addRoadButton);
             this.itemsPanel.Controls.Add(this.destNodeList);
             this.itemsPanel.Controls.Add(this.sourceNodeList);
@@ -210,10 +232,167 @@
             this.configurationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.configurationPanel.BackColor = System.Drawing.Color.Blue;
+            this.configurationPanel.Controls.Add(this.areasPanel);
+            this.configurationPanel.Controls.Add(this.roadsPanel);
+            this.configurationPanel.Controls.Add(this.nodesPanel);
             this.configurationPanel.Location = new System.Drawing.Point(757, 27);
             this.configurationPanel.Name = "configurationPanel";
             this.configurationPanel.Size = new System.Drawing.Size(157, 595);
             this.configurationPanel.TabIndex = 4;
+            // 
+            // nodesPanel
+            // 
+            this.nodesPanel.BackColor = System.Drawing.Color.White;
+            this.nodesPanel.Controls.Add(this.areasLabel);
+            this.nodesPanel.Controls.Add(this.addAreaToNodeButton);
+            this.nodesPanel.Controls.Add(this.areaUpDown);
+            this.nodesPanel.Controls.Add(this.areasList);
+            this.nodesPanel.Controls.Add(this.invisbileNodeCheckBox);
+            this.nodesPanel.Location = new System.Drawing.Point(4, 4);
+            this.nodesPanel.Name = "nodesPanel";
+            this.nodesPanel.Size = new System.Drawing.Size(150, 184);
+            this.nodesPanel.TabIndex = 0;
+            this.nodesPanel.Visible = false;
+            // 
+            // roadsPanel
+            // 
+            this.roadsPanel.BackColor = System.Drawing.Color.White;
+            this.roadsPanel.Controls.Add(this.costUpDown);
+            this.roadsPanel.Controls.Add(this.roadCostLabel);
+            this.roadsPanel.Controls.Add(this.invisibleRoadCheckBox);
+            this.roadsPanel.Location = new System.Drawing.Point(4, 192);
+            this.roadsPanel.Name = "roadsPanel";
+            this.roadsPanel.Size = new System.Drawing.Size(150, 76);
+            this.roadsPanel.TabIndex = 1;
+            this.roadsPanel.Visible = false;
+            // 
+            // areasPanel
+            // 
+            this.areasPanel.BackColor = System.Drawing.Color.White;
+            this.areasPanel.Controls.Add(this.trafficUpDown);
+            this.areasPanel.Controls.Add(this.trafficCostLabel);
+            this.areasPanel.Location = new System.Drawing.Point(4, 274);
+            this.areasPanel.Name = "areasPanel";
+            this.areasPanel.Size = new System.Drawing.Size(150, 59);
+            this.areasPanel.TabIndex = 1;
+            this.areasPanel.Visible = false;
+            // 
+            // invisbileNodeCheckBox
+            // 
+            this.invisbileNodeCheckBox.AutoSize = true;
+            this.invisbileNodeCheckBox.Location = new System.Drawing.Point(4, 4);
+            this.invisbileNodeCheckBox.Name = "invisbileNodeCheckBox";
+            this.invisbileNodeCheckBox.Size = new System.Drawing.Size(133, 17);
+            this.invisbileNodeCheckBox.TabIndex = 0;
+            this.invisbileNodeCheckBox.Text = "Invisible Routing Node";
+            this.invisbileNodeCheckBox.UseVisualStyleBackColor = true;
+            this.invisbileNodeCheckBox.CheckedChanged += new System.EventHandler(this.invisbileNodeCheckBox_CheckedChanged);
+            // 
+            // invisibleRoadCheckBox
+            // 
+            this.invisibleRoadCheckBox.AutoSize = true;
+            this.invisibleRoadCheckBox.Location = new System.Drawing.Point(5, 3);
+            this.invisibleRoadCheckBox.Name = "invisibleRoadCheckBox";
+            this.invisibleRoadCheckBox.Size = new System.Drawing.Size(121, 17);
+            this.invisibleRoadCheckBox.TabIndex = 1;
+            this.invisibleRoadCheckBox.Text = "Invisible Jump Road";
+            this.invisibleRoadCheckBox.UseVisualStyleBackColor = true;
+            this.invisibleRoadCheckBox.CheckedChanged += new System.EventHandler(this.invisibleRoadCheckBox_CheckedChanged);
+            // 
+            // roadCostLabel
+            // 
+            this.roadCostLabel.AutoSize = true;
+            this.roadCostLabel.Location = new System.Drawing.Point(5, 27);
+            this.roadCostLabel.Name = "roadCostLabel";
+            this.roadCostLabel.Size = new System.Drawing.Size(130, 13);
+            this.roadCostLabel.TabIndex = 2;
+            this.roadCostLabel.Text = "Cost (Leave at 0 for auto):";
+            // 
+            // costUpDown
+            // 
+            this.costUpDown.Location = new System.Drawing.Point(5, 44);
+            this.costUpDown.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.costUpDown.Name = "costUpDown";
+            this.costUpDown.Size = new System.Drawing.Size(130, 20);
+            this.costUpDown.TabIndex = 3;
+            this.costUpDown.ValueChanged += new System.EventHandler(this.costUpDown_ValueChanged);
+            // 
+            // trafficUpDown
+            // 
+            this.trafficUpDown.Location = new System.Drawing.Point(5, 26);
+            this.trafficUpDown.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.trafficUpDown.Name = "trafficUpDown";
+            this.trafficUpDown.Size = new System.Drawing.Size(130, 20);
+            this.trafficUpDown.TabIndex = 5;
+            this.trafficUpDown.ValueChanged += new System.EventHandler(this.trafficUpDown_ValueChanged);
+            // 
+            // trafficCostLabel
+            // 
+            this.trafficCostLabel.AutoSize = true;
+            this.trafficCostLabel.Location = new System.Drawing.Point(5, 9);
+            this.trafficCostLabel.Name = "trafficCostLabel";
+            this.trafficCostLabel.Size = new System.Drawing.Size(64, 13);
+            this.trafficCostLabel.TabIndex = 4;
+            this.trafficCostLabel.Text = "Traffic Cost:";
+            // 
+            // areasList
+            // 
+            this.areasList.FormattingEnabled = true;
+            this.areasList.Location = new System.Drawing.Point(5, 60);
+            this.areasList.Name = "areasList";
+            this.areasList.Size = new System.Drawing.Size(129, 82);
+            this.areasList.TabIndex = 6;
+            // 
+            // areaUpDown
+            // 
+            this.areaUpDown.Enabled = false;
+            this.areaUpDown.Location = new System.Drawing.Point(5, 149);
+            this.areaUpDown.Maximum = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.areaUpDown.Name = "areaUpDown";
+            this.areaUpDown.Size = new System.Drawing.Size(60, 20);
+            this.areaUpDown.TabIndex = 7;
+            // 
+            // addAreaToNodeButton
+            // 
+            this.addAreaToNodeButton.Enabled = false;
+            this.addAreaToNodeButton.Location = new System.Drawing.Point(69, 149);
+            this.addAreaToNodeButton.Name = "addAreaToNodeButton";
+            this.addAreaToNodeButton.Size = new System.Drawing.Size(65, 20);
+            this.addAreaToNodeButton.TabIndex = 8;
+            this.addAreaToNodeButton.Text = "Add";
+            this.addAreaToNodeButton.UseVisualStyleBackColor = true;
+            this.addAreaToNodeButton.Click += new System.EventHandler(this.addAreaToNodeButton_Click);
+            // 
+            // areasLabel
+            // 
+            this.areasLabel.AutoSize = true;
+            this.areasLabel.Location = new System.Drawing.Point(5, 41);
+            this.areasLabel.Name = "areasLabel";
+            this.areasLabel.Size = new System.Drawing.Size(37, 13);
+            this.areasLabel.TabIndex = 9;
+            this.areasLabel.Text = "Areas:";
+            // 
+            // addAreaButton
+            // 
+            this.addAreaButton.Location = new System.Drawing.Point(12, 115);
+            this.addAreaButton.Name = "addAreaButton";
+            this.addAreaButton.Size = new System.Drawing.Size(186, 44);
+            this.addAreaButton.TabIndex = 6;
+            this.addAreaButton.Text = "Add Area";
+            this.addAreaButton.UseVisualStyleBackColor = true;
+            this.addAreaButton.Click += new System.EventHandler(this.addAreaButton_Click);
             // 
             // mainForm
             // 
@@ -234,6 +413,16 @@
             this.itemsPanel.ResumeLayout(false);
             this.itemsPanel.PerformLayout();
             this.infoPanel.ResumeLayout(false);
+            this.configurationPanel.ResumeLayout(false);
+            this.nodesPanel.ResumeLayout(false);
+            this.nodesPanel.PerformLayout();
+            this.roadsPanel.ResumeLayout(false);
+            this.roadsPanel.PerformLayout();
+            this.areasPanel.ResumeLayout(false);
+            this.areasPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.costUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trafficUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.areaUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -259,6 +448,20 @@
         private System.Windows.Forms.Button addRoadButton;
         private System.Windows.Forms.ListBox destNodeList;
         private System.Windows.Forms.ListBox sourceNodeList;
+        private System.Windows.Forms.Panel areasPanel;
+        private System.Windows.Forms.Panel roadsPanel;
+        private System.Windows.Forms.Panel nodesPanel;
+        private System.Windows.Forms.NumericUpDown costUpDown;
+        private System.Windows.Forms.Label roadCostLabel;
+        private System.Windows.Forms.CheckBox invisibleRoadCheckBox;
+        private System.Windows.Forms.CheckBox invisbileNodeCheckBox;
+        private System.Windows.Forms.NumericUpDown trafficUpDown;
+        private System.Windows.Forms.Label trafficCostLabel;
+        private System.Windows.Forms.ListBox areasList;
+        private System.Windows.Forms.Label areasLabel;
+        private System.Windows.Forms.Button addAreaToNodeButton;
+        private System.Windows.Forms.NumericUpDown areaUpDown;
+        private System.Windows.Forms.Button addAreaButton;
     }
 }
 

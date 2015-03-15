@@ -13,9 +13,13 @@ namespace Map_Creator
     {
         const int MAP_NODES_INDEX = 0;
         const int MAP_ROADS_INDEX = 1;
+        const int MAP_AREAS_INDEX = 2;
 
         private List<MapNode> nodes = new List<MapNode>();
         private List<MapRoad> roads = new List<MapRoad>();
+        private List<MapArea> areas = new List<MapArea>();
+
+        private TreeNode currentlySelectedTreeNode = null;
 
         Image mapImage = null;
 
@@ -26,13 +30,38 @@ namespace Map_Creator
 
         private void mainForm_Load(object sender, EventArgs e)
         {
-            infoTreeView.Nodes.Add("Map Nodes");
-            infoTreeView.Nodes.Add("Map Roads");
+            infoTreeView.Nodes.Add("Nodes");
+            infoTreeView.Nodes.Add("Roads");
+            infoTreeView.Nodes.Add("Areas");
+
+            roadsPanel.Location = nodesPanel.Location;
+            areasPanel.Location = nodesPanel.Location;
         }
 
         private void infoTreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            
+            nodesPanel.Visible = false;
+            roadsPanel.Visible = false;
+            areasPanel.Visible = false;
+
+            TreeNode node = e.Node.Parent;
+            this.currentlySelectedTreeNode = e.Node;
+
+            if (node != null)
+            {
+                switch (node.Index)
+                {
+                    case MAP_NODES_INDEX:
+                        ShowNodesPanel();
+                        break;
+                    case MAP_ROADS_INDEX:
+                        ShowRoadsPanel();
+                        break;
+                    case MAP_AREAS_INDEX:
+                        ShowAreasPanel();
+                        break;
+                }
+            }
         }
 
         private void mapPanel_Paint(object sender, PaintEventArgs e)
@@ -134,23 +163,51 @@ namespace Map_Creator
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                List<List<Tuple<int,int>>> adjacencyList = buildAdjacencyList();
+                List<List<Tuple<int,int,int>>> adjacencyList = buildAdjacencyList();
 
                 System.IO.StreamWriter writer = new System.IO.StreamWriter(dialog.FileName);
 
+                //Write the area data
+                writer.WriteLine(areas.Count);
+                foreach (MapArea area in areas)
+                    writer.WriteLine(area.trafficCost);
+
+                //Write the node data
                 writer.WriteLine(nodes.Count.ToString());
                 foreach (MapNode node in nodes)
                 {
+                    //Write node name
                     writer.WriteLine(node.name);
+
+                    //Write node coordinates
                     writer.WriteLine(String.Format("{0:N0} {1:N0}", node.x, node.y));
+
+                    //Write areas that the nodes are in
+                    if (node.areas.Count > 0)
+                    {
+                        for (int i = 0; i < node.areas.Count; i++)
+                        {
+                            if (i > 0) writer.Write(" ");
+                            writer.Write(node.areas[i]);
+                        }
+                    }
+                    else writer.Write("-"); //Node is not part of an area
+                    writer.WriteLine();
+
+                    //Write a flag to indicate whether or not the node is invsibile
+                    if (node.invisible) writer.WriteLine("I");
+                    else writer.WriteLine("-");
                 }
 
+                //Write the adjacencies
                 for(int i = 0; i < adjacencyList.Count; i++)
                 {
                     for (int j = 0; j < adjacencyList[i].Count; j++)
                     {
                         if (j > 0) writer.Write(" ");
-                        writer.Write(String.Format("{0:N0} {1:N0}", adjacencyList[i][j].Item1, adjacencyList[i][j].Item2));
+
+                        //Write the adjacency list: destination index, cost, invisible flag
+                        writer.Write(String.Format("{0:N0} {1:N0} {2}", adjacencyList[i][j].Item1, adjacencyList[i][j].Item2, adjacencyList[i][j].Item3 == 1 ? "I" : "-"));
                     }
                     writer.WriteLine();
                 }
@@ -179,20 +236,100 @@ namespace Map_Creator
 
         //Returns an adjacency list for an undirected graph.
         //The first integer in the tuple is the index to the
-        //destination node, the second integer is the cost.
-        private List<List<Tuple<int,int>>> buildAdjacencyList()
+        //destination node, the second integer is the cost, the third integer
+        //indicates whether it is an invisible road (0 = No, 1 = Yes).
+        private List<List<Tuple<int,int,int>>> buildAdjacencyList()
         {
-            List<List<Tuple<int,int>>> adj = new List<List<Tuple<int,int>>>();
+            List<List<Tuple<int,int,int>>> adj = new List<List<Tuple<int,int,int>>>();
             for (int i = 0; i < nodes.Count; i++)
-                adj.Add(new List<Tuple<int, int>>());
+                adj.Add(new List<Tuple<int, int, int>>());
 
             foreach (MapRoad road in roads)
             {
-                adj[road.a.index].Add(new Tuple<int, int>(road.b.index, road.getCost()));
-                adj[road.b.index].Add(new Tuple<int, int>(road.a.index, road.getCost()));
+                adj[road.a.index].Add(new Tuple<int, int, int>(road.b.index, road.getCost(), road.invisible ? 1 : 0));
+                adj[road.b.index].Add(new Tuple<int, int, int>(road.a.index, road.getCost(), road.invisible ? 1 : 0));
             }
 
             return adj;
         }
+
+        private void addAreaButton_Click(object sender, EventArgs e)
+        {
+            MapArea area = new MapArea(areas.Count);
+            areas.Add(area);
+            infoTreeView.Nodes[MAP_AREAS_INDEX].Nodes.Add(Convert.ToString(area.index));
+
+            areaUpDown.Enabled = true;
+            addAreaToNodeButton.Enabled = true;
+
+            areaUpDown.Maximum = area.index;
+        }
+
+        //Sidebar functions
+        private void ShowNodesPanel()
+        {
+            int index = currentlySelectedTreeNode.Index;
+            
+            nodesPanel.Visible = true;
+            invisbileNodeCheckBox.Checked = nodes[index].invisible;
+
+            areasList.Items.Clear();
+            foreach (int a in nodes[index].areas)
+                areasList.Items.Add(a);
+        }
+
+        private void ShowRoadsPanel()
+        {
+            int index = currentlySelectedTreeNode.Index;
+
+            roadsPanel.Visible = true;
+            invisibleRoadCheckBox.Checked = roads[index].invisible;
+
+            costUpDown.Value = (decimal)roads[index].cost;
+        }
+
+        private void ShowAreasPanel()
+        {
+            int index = currentlySelectedTreeNode.Index;
+
+            areasPanel.Visible = true;
+            trafficUpDown.Value = (decimal)areas[index].trafficCost;
+        }
+
+        //Nodes panel callbacks
+        private void invisbileNodeCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            nodes[currentlySelectedTreeNode.Index].invisible = invisbileNodeCheckBox.Checked;
+        }
+
+        private void addAreaToNodeButton_Click(object sender, EventArgs e)
+        {
+            int index = (int)areaUpDown.Value;
+
+            if (!nodes[currentlySelectedTreeNode.Index].areas.Contains(index))
+            {
+                areasList.Items.Add(index);
+                nodes[currentlySelectedTreeNode.Index].areas.Add(index);
+            }
+        }
+
+        //Roads panel callbacks
+        private void invisibleRoadCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            roads[currentlySelectedTreeNode.Index].invisible = invisibleRoadCheckBox.Checked;
+        }
+
+        private void costUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            roads[currentlySelectedTreeNode.Index].cost = (int)costUpDown.Value;
+        }
+
+        //Areas panel callbacks
+        private void trafficUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            areas[currentlySelectedTreeNode.Index].trafficCost = (int)trafficUpDown.Value;
+        }
+
+
     }
 }

@@ -10,6 +10,9 @@ namespace Map_Creator
         public String name;
         public int x, y;   //Co-Ordinates
         public int index;
+        public bool invisible = false;
+
+        public List<int> areas = new List<int>();
 
         public MapNode(String name, int x, int y, int index)
         {

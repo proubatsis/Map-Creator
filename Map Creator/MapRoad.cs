@@ -9,6 +9,7 @@ namespace Map_Creator
     {
         public MapNode a, b;
         public int cost = 0;    //Leave it at 0 for auto calculated cost
+        public bool invisible = false;
 
         public MapRoad(MapNode a, MapNode b)
         {
