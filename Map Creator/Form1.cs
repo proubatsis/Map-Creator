@@ -70,18 +70,18 @@ namespace Map_Creator
 
             const int RADIUS = 10;
             const int HALF_RADIUS = RADIUS / 2;
-            const int TEXT_OFFSET = 12;
+            const int TEXT_OFFSET = 7;
 
             foreach (MapNode mapNode in nodes)
             {
-                e.Graphics.FillEllipse(Brushes.Blue, mapNode.x, mapNode.y, RADIUS, RADIUS);
+                e.Graphics.FillEllipse(Brushes.Blue, mapNode.x - HALF_RADIUS, mapNode.y - HALF_RADIUS, RADIUS, RADIUS);
                 e.Graphics.DrawString(mapNode.name, new Font(FontFamily.GenericSansSerif, 8), Brushes.Black, mapNode.x + TEXT_OFFSET, mapNode.y + TEXT_OFFSET);
             }
 
             Pen roadPen = new Pen(Brushes.Green, 3);
             foreach (MapRoad mapRoad in roads)
             {
-                e.Graphics.DrawLine(roadPen, mapRoad.a.x + HALF_RADIUS, mapRoad.a.y + HALF_RADIUS, mapRoad.b.x + HALF_RADIUS, mapRoad.b.y + HALF_RADIUS);
+                e.Graphics.DrawLine(roadPen, mapRoad.a.x, mapRoad.a.y, mapRoad.b.x, mapRoad.b.y);
             }
         }
 
