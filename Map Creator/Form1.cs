@@ -66,7 +66,7 @@ namespace Map_Creator
 
         private void mapPanel_Paint(object sender, PaintEventArgs e)
         {
-            if (mapImage != null) e.Graphics.DrawImage(mapImage, 0, 0);
+            if (mapImage != null) e.Graphics.DrawImage(mapImage, 0, 0, mapImage.Width, mapImage.Height);
 
             const int RADIUS = 10;
             const int HALF_RADIUS = RADIUS / 2;
@@ -128,11 +128,11 @@ namespace Map_Creator
             int dx = newPanelWidth - mapPanel.Width;
             int dy = newPanelHeight - mapPanel.Height;
 
-            mapPanel.Width += dx;
-            mapPanel.Height += dy;
-
             this.Width += dx;
             this.Height += dy;
+
+            mapPanel.Width += dx;
+            mapPanel.Height += dy;
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
