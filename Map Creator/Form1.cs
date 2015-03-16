@@ -205,6 +205,7 @@ namespace Map_Creator
             }
 
             reader.Close();
+            mapPanel.Invalidate();
         }
 
         private void imageToolStripMenuItem_Click(object sender, EventArgs e)
