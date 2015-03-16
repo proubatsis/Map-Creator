@@ -143,6 +143,8 @@ namespace Map_Creator
         private void mapToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "Text Files (*.txt)|*.txt";
+
             if (dialog.ShowDialog() != DialogResult.OK) return;
 
             areas = new List<MapArea>();
@@ -200,6 +202,7 @@ namespace Map_Creator
         private void imageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "Image Files (*.png, *.jpg, *.png)|*.png;*.jpg;*.bmp";
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
@@ -212,6 +215,7 @@ namespace Map_Creator
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog dialog = new SaveFileDialog();
+            dialog.Filter = "Text Files (*.txt)|*.txt";
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
