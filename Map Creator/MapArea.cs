@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ * Created by Panagiotis Roubatsis
+ * 
+ * Description: The MapArea class represents a group of MapNodes.
+ * The area represents common characteristics about a group of nodes (eg. traffic).
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

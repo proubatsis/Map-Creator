@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * Created by Panagiotis Roubatsis
+ * 
+ * Description: The main form for this project. It allows
+ * the user to create a map that can be used along side the
+ * "Map Route Finder" project to calculate the best path
+ * to a given location.
+*/
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -34,12 +43,15 @@ namespace Map_Creator
             infoTreeView.Nodes.Add("Roads");
             infoTreeView.Nodes.Add("Areas");
 
+            //Make all the panels overlap eachother.
+            //The locations in the designer are just for convenience.
             roadsPanel.Location = nodesPanel.Location;
             areasPanel.Location = nodesPanel.Location;
         }
 
         private void infoTreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            //Hide all the panels
             nodesPanel.Visible = false;
             roadsPanel.Visible = false;
             areasPanel.Visible = false;
@@ -47,6 +59,7 @@ namespace Map_Creator
             TreeNode node = e.Node.Parent;
             this.currentlySelectedTreeNode = e.Node;
 
+            //Show the appropriate panel
             if (node != null)
             {
                 switch (node.Index)
@@ -66,23 +79,25 @@ namespace Map_Creator
 
         private void mapPanel_Paint(object sender, PaintEventArgs e)
         {
+            //If an image has been opened then draw it
             if (mapImage != null) e.Graphics.DrawImage(mapImage, 0, 0, mapImage.Width, mapImage.Height);
 
+            //Constants used for positioning the on screen items
             const int RADIUS = 10;
             const int HALF_RADIUS = RADIUS / 2;
             const int TEXT_OFFSET = 7;
 
+            //Draw nodes
             foreach (MapNode mapNode in nodes)
             {
                 e.Graphics.FillEllipse(Brushes.Blue, mapNode.x - HALF_RADIUS, mapNode.y - HALF_RADIUS, RADIUS, RADIUS);
                 e.Graphics.DrawString(mapNode.name, new Font(FontFamily.GenericSansSerif, 8), Brushes.Black, mapNode.x + TEXT_OFFSET, mapNode.y + TEXT_OFFSET);
             }
 
+            //Draw the roads
             Pen roadPen = new Pen(Brushes.Green, 3);
             foreach (MapRoad mapRoad in roads)
-            {
                 e.Graphics.DrawLine(roadPen, mapRoad.a.x, mapRoad.a.y, mapRoad.b.x, mapRoad.b.y);
-            }
         }
 
         private void mapPanel_MouseClick(object sender, MouseEventArgs e)
@@ -145,9 +160,11 @@ namespace Map_Creator
             infoTreeView.Nodes[MAP_ROADS_INDEX].Nodes.Clear();
             infoTreeView.Nodes[MAP_AREAS_INDEX].Nodes.Clear();
 
+            //Re-draw the panel with all the nodes and roads removed
             mapPanel.Invalidate();
         }
 
+        //Load the map data from a text file
         private void mapToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
@@ -161,35 +178,48 @@ namespace Map_Creator
 
             System.IO.StreamReader reader = new System.IO.StreamReader(dialog.FileName);
 
+            //Load all the areas
             int areaCount = int.Parse(reader.ReadLine());
             for (int i = 0; i < areaCount; i++)
             {
+                //Add an area initialized with an index and traffic cost
                 areas.Add(new MapArea(i, int.Parse(reader.ReadLine())));
                 infoTreeView.Nodes[MAP_AREAS_INDEX].Nodes.Add(Convert.ToString(i));
             }
 
+            //Load all the nodes
             int nodeCount = int.Parse(reader.ReadLine());
             for (int i = 0; i < nodeCount; i++)
             {
                 String name = reader.ReadLine();
+
                 String[] coordStr = reader.ReadLine().Split(' ');
                 int x = int.Parse(coordStr[0]), y = int.Parse(coordStr[1]);
 
                 MapNode node = new MapNode(name, x, y, i);
+
+                //Get all the areas that the node belongs to.
+                //A string with value "-" means that the nodes does not belong to an area.
                 String[] nodeAreasStr = reader.ReadLine().Split(' ');
                 for (int j = 0; j < nodeAreasStr.Length; j++)
                     if (nodeAreasStr[j] != "-") node.areas.Add(int.Parse(nodeAreasStr[j]));
 
+                //Check for the invisible flag "I", if it exists make the
+                //node an invisible routing node.
                 node.invisible = reader.ReadLine().Contains('I');
 
+                //Store the node and display it in the tree view
                 nodes.Add(node);
                 infoTreeView.Nodes[MAP_NODES_INDEX].Nodes.Add(name);
             }
 
+            //Load all the roads (stored as an adjacency list)
             for (int i = 0; i < nodeCount; i++)
             {
                 String[] tokens = reader.ReadLine().Split(' ');
 
+                //Each adjacency is stored in the format: destination index, cost, flags.
+                //The source index is the integer 'i' in the outer loop.
                 for (int j = 0; j < tokens.Length; j += 3)
                 {
                     int destIndex = int.Parse(tokens[j]);
@@ -199,6 +229,7 @@ namespace Map_Creator
                     road.cost = int.Parse(tokens[j + 1]);
                     road.invisible = tokens[j + 2].Contains('I');
 
+                    //Store the road and display it in the tree view
                     roads.Add(road);
                     infoTreeView.Nodes[MAP_ROADS_INDEX].Nodes.Add(road.a.name + " -> " + road.b.name);
                 }
@@ -208,6 +239,7 @@ namespace Map_Creator
             mapPanel.Invalidate();
         }
 
+        //Allow the user to choose an image file to base the map on.
         private void imageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
@@ -221,6 +253,8 @@ namespace Map_Creator
             }
         }
 
+        //Export the map data to a text file. It can be opened by "Map Route Finder" or
+        //opened again by this application (via File->Open->Map) to edit it.
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog dialog = new SaveFileDialog();
@@ -286,6 +320,7 @@ namespace Map_Creator
             Application.Exit();
         }
 
+        //Adds a road between the two selected nodes in the list boxes
         private void addRoadButton_Click(object sender, EventArgs e)
         {
             int a = sourceNodeList.SelectedIndex, b = destNodeList.SelectedIndex;
@@ -318,6 +353,8 @@ namespace Map_Creator
             return adj;
         }
 
+        //Adds an area to the map. It's values can be modified by selecting
+        //the area in the tree view.
         private void addAreaButton_Click(object sender, EventArgs e)
         {
             MapArea area = new MapArea(areas.Count);
