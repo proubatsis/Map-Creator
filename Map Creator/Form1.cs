@@ -137,7 +137,15 @@ namespace Map_Creator
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
+            nodes = new List<MapNode>();
+            roads = new List<MapRoad>();
+            areas = new List<MapArea>();
+
+            infoTreeView.Nodes[MAP_NODES_INDEX].Nodes.Clear();
+            infoTreeView.Nodes[MAP_ROADS_INDEX].Nodes.Clear();
+            infoTreeView.Nodes[MAP_AREAS_INDEX].Nodes.Clear();
+
+            mapPanel.Invalidate();
         }
 
         private void mapToolStripMenuItem_Click(object sender, EventArgs e)
