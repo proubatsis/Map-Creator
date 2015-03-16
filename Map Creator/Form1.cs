@@ -142,7 +142,59 @@ namespace Map_Creator
 
         private void mapToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            OpenFileDialog dialog = new OpenFileDialog();
+            if (dialog.ShowDialog() != DialogResult.OK) return;
 
+            areas = new List<MapArea>();
+            nodes = new List<MapNode>();
+            roads = new List<MapRoad>();
+
+            System.IO.StreamReader reader = new System.IO.StreamReader(dialog.FileName);
+
+            int areaCount = int.Parse(reader.ReadLine());
+            for (int i = 0; i < areaCount; i++)
+            {
+                areas.Add(new MapArea(i, int.Parse(reader.ReadLine())));
+                infoTreeView.Nodes[MAP_AREAS_INDEX].Nodes.Add(Convert.ToString(i));
+            }
+
+            int nodeCount = int.Parse(reader.ReadLine());
+            for (int i = 0; i < nodeCount; i++)
+            {
+                String name = reader.ReadLine();
+                String[] coordStr = reader.ReadLine().Split(' ');
+                int x = int.Parse(coordStr[0]), y = int.Parse(coordStr[1]);
+
+                MapNode node = new MapNode(name, x, y, i);
+                String[] nodeAreasStr = reader.ReadLine().Split(' ');
+                for (int j = 0; j < nodeAreasStr.Length; j++)
+                    if (nodeAreasStr[j] != "-") node.areas.Add(int.Parse(nodeAreasStr[j]));
+
+                node.invisible = reader.ReadLine().Contains('I');
+
+                nodes.Add(node);
+                infoTreeView.Nodes[MAP_NODES_INDEX].Nodes.Add(name);
+            }
+
+            for (int i = 0; i < nodeCount; i++)
+            {
+                String[] tokens = reader.ReadLine().Split(' ');
+
+                for (int j = 0; j < tokens.Length; j += 3)
+                {
+                    int destIndex = int.Parse(tokens[j]);
+                    if (destIndex < i) continue;
+
+                    MapRoad road = new MapRoad(nodes[i], nodes[destIndex]);
+                    road.cost = int.Parse(tokens[j + 1]);
+                    road.invisible = tokens[j + 2].Contains('I');
+
+                    roads.Add(road);
+                    infoTreeView.Nodes[MAP_ROADS_INDEX].Nodes.Add(road.a.name + " -> " + road.b.name);
+                }
+            }
+
+            reader.Close();
         }
 
         private void imageToolStripMenuItem_Click(object sender, EventArgs e)

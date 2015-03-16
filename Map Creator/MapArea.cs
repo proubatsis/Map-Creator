@@ -16,5 +16,11 @@ namespace Map_Creator
             this.index = index;
         }
 
+        public MapArea(int index, int trafficCost)
+        {
+            this.trafficCost = trafficCost;
+            this.index = index;
+        }
+
     }
 }
