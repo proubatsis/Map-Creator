@@ -35,6 +35,8 @@ namespace Map_Creator
         public int index;
         public int trafficCost;
 
+        public MapArea() { }
+
         public MapArea(int index)
         {
             this.trafficCost = 0;
@@ -45,6 +47,11 @@ namespace Map_Creator
         {
             this.trafficCost = trafficCost;
             this.index = index;
+        }
+
+        public override string ToString()
+        {
+            return index.ToString();
         }
 
     }

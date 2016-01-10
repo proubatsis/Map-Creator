@@ -54,5 +54,9 @@ namespace Map_Creator
             return (int)Math.Sqrt(dx * dx + dy * dy);
         }
 
+        public override string ToString()
+        {
+            return a.name + " -> " + b.name;
+        }
     }
 }

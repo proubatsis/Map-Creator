@@ -50,5 +50,10 @@ namespace Map_Creator
             this.y = y;
             this.index = index;
         }
+
+        public override string ToString()
+        {
+            return name;
+        }
     }
 }
