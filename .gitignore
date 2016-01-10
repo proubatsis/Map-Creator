@@ -4,3 +4,4 @@ Map Creator/bin/
 Map Creator.suo
 packages/
 *.suo
+.vs/

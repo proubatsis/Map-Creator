@@ -457,6 +457,20 @@ namespace Map_Creator
 
         private void exportJSONToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.Filter = "JSON Files (*.json)|*.json";
+
+            if(dialog.ShowDialog() == DialogResult.OK)
+            {
+                MapData data = new MapData();
+                data.nodes = nodes;
+                data.areas = areas;
+                data.adjacencies = buildAdjacencyList();
+
+                StreamWriter writer = new StreamWriter(dialog.FileName);
+                writer.Write(JsonConvert.SerializeObject(data));
+                writer.Close();
+            }
             
         }
     }
