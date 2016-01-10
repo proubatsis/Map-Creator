@@ -286,6 +286,7 @@ namespace Map_Creator
             return adj;
         }
 
+        //Inverse of buildAdjacencyList(). Returns the roads given the adjacencies (and the nodes to re-build it).
         private List<MapRoad> adjacencyListToRoads(List<List<MapAdjacency>> adjacencies, List<MapNode> nodes)
         {
             List<MapRoad> roads = new List<MapRoad>();
