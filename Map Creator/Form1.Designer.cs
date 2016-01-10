@@ -37,6 +37,7 @@
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.itemsPanel = new System.Windows.Forms.Panel();
+            this.addAreaButton = new System.Windows.Forms.Button();
             this.addRoadButton = new System.Windows.Forms.Button();
             this.destNodeList = new System.Windows.Forms.ListBox();
             this.sourceNodeList = new System.Windows.Forms.ListBox();
@@ -46,29 +47,29 @@
             this.infoPanel = new System.Windows.Forms.Panel();
             this.infoTreeView = new System.Windows.Forms.TreeView();
             this.configurationPanel = new System.Windows.Forms.Panel();
-            this.nodesPanel = new System.Windows.Forms.Panel();
-            this.roadsPanel = new System.Windows.Forms.Panel();
             this.areasPanel = new System.Windows.Forms.Panel();
-            this.invisbileNodeCheckBox = new System.Windows.Forms.CheckBox();
-            this.invisibleRoadCheckBox = new System.Windows.Forms.CheckBox();
-            this.roadCostLabel = new System.Windows.Forms.Label();
-            this.costUpDown = new System.Windows.Forms.NumericUpDown();
             this.trafficUpDown = new System.Windows.Forms.NumericUpDown();
             this.trafficCostLabel = new System.Windows.Forms.Label();
-            this.areasList = new System.Windows.Forms.ListBox();
-            this.areaUpDown = new System.Windows.Forms.NumericUpDown();
-            this.addAreaToNodeButton = new System.Windows.Forms.Button();
+            this.roadsPanel = new System.Windows.Forms.Panel();
+            this.costUpDown = new System.Windows.Forms.NumericUpDown();
+            this.roadCostLabel = new System.Windows.Forms.Label();
+            this.invisibleRoadCheckBox = new System.Windows.Forms.CheckBox();
+            this.nodesPanel = new System.Windows.Forms.Panel();
             this.areasLabel = new System.Windows.Forms.Label();
-            this.addAreaButton = new System.Windows.Forms.Button();
+            this.addAreaToNodeButton = new System.Windows.Forms.Button();
+            this.areaUpDown = new System.Windows.Forms.NumericUpDown();
+            this.areasList = new System.Windows.Forms.ListBox();
+            this.invisbileNodeCheckBox = new System.Windows.Forms.CheckBox();
+            this.exportJSONToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.topMenuStrip.SuspendLayout();
             this.itemsPanel.SuspendLayout();
             this.infoPanel.SuspendLayout();
             this.configurationPanel.SuspendLayout();
-            this.nodesPanel.SuspendLayout();
-            this.roadsPanel.SuspendLayout();
             this.areasPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.costUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trafficUpDown)).BeginInit();
+            this.roadsPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.costUpDown)).BeginInit();
+            this.nodesPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.areaUpDown)).BeginInit();
             this.SuspendLayout();
             // 
@@ -88,6 +89,7 @@
             this.newToolStripMenuItem,
             this.openToolStripMenuItem,
             this.saveToolStripMenuItem,
+            this.exportJSONToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -96,7 +98,7 @@
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
@@ -106,7 +108,7 @@
             this.mapToolStripMenuItem,
             this.imageToolStripMenuItem});
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.openToolStripMenuItem.Text = "Open";
             // 
             // mapToolStripMenuItem
@@ -126,21 +128,21 @@
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // itemsPanel
             // 
-            this.itemsPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.itemsPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.itemsPanel.BackColor = System.Drawing.Color.Red;
             this.itemsPanel.Controls.Add(this.addAreaButton);
             this.itemsPanel.Controls.Add(this.addRoadButton);
@@ -152,6 +154,16 @@
             this.itemsPanel.Name = "itemsPanel";
             this.itemsPanel.Size = new System.Drawing.Size(588, 168);
             this.itemsPanel.TabIndex = 1;
+            // 
+            // addAreaButton
+            // 
+            this.addAreaButton.Location = new System.Drawing.Point(12, 115);
+            this.addAreaButton.Name = "addAreaButton";
+            this.addAreaButton.Size = new System.Drawing.Size(186, 44);
+            this.addAreaButton.TabIndex = 6;
+            this.addAreaButton.Text = "Add Area";
+            this.addAreaButton.UseVisualStyleBackColor = true;
+            this.addAreaButton.Click += new System.EventHandler(this.addAreaButton_Click);
             // 
             // addRoadButton
             // 
@@ -207,8 +219,8 @@
             // 
             // infoPanel
             // 
-            this.infoPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.infoPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.infoPanel.BackColor = System.Drawing.Color.Lime;
             this.infoPanel.Controls.Add(this.infoTreeView);
             this.infoPanel.Location = new System.Drawing.Point(594, 27);
@@ -218,9 +230,9 @@
             // 
             // infoTreeView
             // 
-            this.infoTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.infoTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.infoTreeView.Location = new System.Drawing.Point(3, 3);
             this.infoTreeView.Name = "infoTreeView";
             this.infoTreeView.Size = new System.Drawing.Size(151, 585);
@@ -229,8 +241,8 @@
             // 
             // configurationPanel
             // 
-            this.configurationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.configurationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.configurationPanel.BackColor = System.Drawing.Color.Blue;
             this.configurationPanel.Controls.Add(this.areasPanel);
             this.configurationPanel.Controls.Add(this.roadsPanel);
@@ -239,32 +251,6 @@
             this.configurationPanel.Name = "configurationPanel";
             this.configurationPanel.Size = new System.Drawing.Size(157, 595);
             this.configurationPanel.TabIndex = 4;
-            // 
-            // nodesPanel
-            // 
-            this.nodesPanel.BackColor = System.Drawing.Color.White;
-            this.nodesPanel.Controls.Add(this.areasLabel);
-            this.nodesPanel.Controls.Add(this.addAreaToNodeButton);
-            this.nodesPanel.Controls.Add(this.areaUpDown);
-            this.nodesPanel.Controls.Add(this.areasList);
-            this.nodesPanel.Controls.Add(this.invisbileNodeCheckBox);
-            this.nodesPanel.Location = new System.Drawing.Point(4, 4);
-            this.nodesPanel.Name = "nodesPanel";
-            this.nodesPanel.Size = new System.Drawing.Size(150, 184);
-            this.nodesPanel.TabIndex = 0;
-            this.nodesPanel.Visible = false;
-            // 
-            // roadsPanel
-            // 
-            this.roadsPanel.BackColor = System.Drawing.Color.White;
-            this.roadsPanel.Controls.Add(this.costUpDown);
-            this.roadsPanel.Controls.Add(this.roadCostLabel);
-            this.roadsPanel.Controls.Add(this.invisibleRoadCheckBox);
-            this.roadsPanel.Location = new System.Drawing.Point(4, 192);
-            this.roadsPanel.Name = "roadsPanel";
-            this.roadsPanel.Size = new System.Drawing.Size(150, 76);
-            this.roadsPanel.TabIndex = 1;
-            this.roadsPanel.Visible = false;
             // 
             // areasPanel
             // 
@@ -276,50 +262,6 @@
             this.areasPanel.Size = new System.Drawing.Size(150, 59);
             this.areasPanel.TabIndex = 1;
             this.areasPanel.Visible = false;
-            // 
-            // invisbileNodeCheckBox
-            // 
-            this.invisbileNodeCheckBox.AutoSize = true;
-            this.invisbileNodeCheckBox.Location = new System.Drawing.Point(4, 4);
-            this.invisbileNodeCheckBox.Name = "invisbileNodeCheckBox";
-            this.invisbileNodeCheckBox.Size = new System.Drawing.Size(133, 17);
-            this.invisbileNodeCheckBox.TabIndex = 0;
-            this.invisbileNodeCheckBox.Text = "Invisible Routing Node";
-            this.invisbileNodeCheckBox.UseVisualStyleBackColor = true;
-            this.invisbileNodeCheckBox.CheckedChanged += new System.EventHandler(this.invisbileNodeCheckBox_CheckedChanged);
-            // 
-            // invisibleRoadCheckBox
-            // 
-            this.invisibleRoadCheckBox.AutoSize = true;
-            this.invisibleRoadCheckBox.Location = new System.Drawing.Point(5, 3);
-            this.invisibleRoadCheckBox.Name = "invisibleRoadCheckBox";
-            this.invisibleRoadCheckBox.Size = new System.Drawing.Size(121, 17);
-            this.invisibleRoadCheckBox.TabIndex = 1;
-            this.invisibleRoadCheckBox.Text = "Invisible Jump Road";
-            this.invisibleRoadCheckBox.UseVisualStyleBackColor = true;
-            this.invisibleRoadCheckBox.CheckedChanged += new System.EventHandler(this.invisibleRoadCheckBox_CheckedChanged);
-            // 
-            // roadCostLabel
-            // 
-            this.roadCostLabel.AutoSize = true;
-            this.roadCostLabel.Location = new System.Drawing.Point(5, 27);
-            this.roadCostLabel.Name = "roadCostLabel";
-            this.roadCostLabel.Size = new System.Drawing.Size(130, 13);
-            this.roadCostLabel.TabIndex = 2;
-            this.roadCostLabel.Text = "Cost (Leave at 0 for auto):";
-            // 
-            // costUpDown
-            // 
-            this.costUpDown.Location = new System.Drawing.Point(5, 44);
-            this.costUpDown.Maximum = new decimal(new int[] {
-            1000000,
-            0,
-            0,
-            0});
-            this.costUpDown.Name = "costUpDown";
-            this.costUpDown.Size = new System.Drawing.Size(130, 20);
-            this.costUpDown.TabIndex = 3;
-            this.costUpDown.ValueChanged += new System.EventHandler(this.costUpDown_ValueChanged);
             // 
             // trafficUpDown
             // 
@@ -343,13 +285,84 @@
             this.trafficCostLabel.TabIndex = 4;
             this.trafficCostLabel.Text = "Traffic Cost:";
             // 
-            // areasList
+            // roadsPanel
             // 
-            this.areasList.FormattingEnabled = true;
-            this.areasList.Location = new System.Drawing.Point(5, 60);
-            this.areasList.Name = "areasList";
-            this.areasList.Size = new System.Drawing.Size(129, 82);
-            this.areasList.TabIndex = 6;
+            this.roadsPanel.BackColor = System.Drawing.Color.White;
+            this.roadsPanel.Controls.Add(this.costUpDown);
+            this.roadsPanel.Controls.Add(this.roadCostLabel);
+            this.roadsPanel.Controls.Add(this.invisibleRoadCheckBox);
+            this.roadsPanel.Location = new System.Drawing.Point(4, 192);
+            this.roadsPanel.Name = "roadsPanel";
+            this.roadsPanel.Size = new System.Drawing.Size(150, 76);
+            this.roadsPanel.TabIndex = 1;
+            this.roadsPanel.Visible = false;
+            // 
+            // costUpDown
+            // 
+            this.costUpDown.Location = new System.Drawing.Point(5, 44);
+            this.costUpDown.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.costUpDown.Name = "costUpDown";
+            this.costUpDown.Size = new System.Drawing.Size(130, 20);
+            this.costUpDown.TabIndex = 3;
+            this.costUpDown.ValueChanged += new System.EventHandler(this.costUpDown_ValueChanged);
+            // 
+            // roadCostLabel
+            // 
+            this.roadCostLabel.AutoSize = true;
+            this.roadCostLabel.Location = new System.Drawing.Point(5, 27);
+            this.roadCostLabel.Name = "roadCostLabel";
+            this.roadCostLabel.Size = new System.Drawing.Size(130, 13);
+            this.roadCostLabel.TabIndex = 2;
+            this.roadCostLabel.Text = "Cost (Leave at 0 for auto):";
+            // 
+            // invisibleRoadCheckBox
+            // 
+            this.invisibleRoadCheckBox.AutoSize = true;
+            this.invisibleRoadCheckBox.Location = new System.Drawing.Point(5, 3);
+            this.invisibleRoadCheckBox.Name = "invisibleRoadCheckBox";
+            this.invisibleRoadCheckBox.Size = new System.Drawing.Size(121, 17);
+            this.invisibleRoadCheckBox.TabIndex = 1;
+            this.invisibleRoadCheckBox.Text = "Invisible Jump Road";
+            this.invisibleRoadCheckBox.UseVisualStyleBackColor = true;
+            this.invisibleRoadCheckBox.CheckedChanged += new System.EventHandler(this.invisibleRoadCheckBox_CheckedChanged);
+            // 
+            // nodesPanel
+            // 
+            this.nodesPanel.BackColor = System.Drawing.Color.White;
+            this.nodesPanel.Controls.Add(this.areasLabel);
+            this.nodesPanel.Controls.Add(this.addAreaToNodeButton);
+            this.nodesPanel.Controls.Add(this.areaUpDown);
+            this.nodesPanel.Controls.Add(this.areasList);
+            this.nodesPanel.Controls.Add(this.invisbileNodeCheckBox);
+            this.nodesPanel.Location = new System.Drawing.Point(4, 4);
+            this.nodesPanel.Name = "nodesPanel";
+            this.nodesPanel.Size = new System.Drawing.Size(150, 184);
+            this.nodesPanel.TabIndex = 0;
+            this.nodesPanel.Visible = false;
+            // 
+            // areasLabel
+            // 
+            this.areasLabel.AutoSize = true;
+            this.areasLabel.Location = new System.Drawing.Point(5, 41);
+            this.areasLabel.Name = "areasLabel";
+            this.areasLabel.Size = new System.Drawing.Size(37, 13);
+            this.areasLabel.TabIndex = 9;
+            this.areasLabel.Text = "Areas:";
+            // 
+            // addAreaToNodeButton
+            // 
+            this.addAreaToNodeButton.Enabled = false;
+            this.addAreaToNodeButton.Location = new System.Drawing.Point(69, 149);
+            this.addAreaToNodeButton.Name = "addAreaToNodeButton";
+            this.addAreaToNodeButton.Size = new System.Drawing.Size(65, 20);
+            this.addAreaToNodeButton.TabIndex = 8;
+            this.addAreaToNodeButton.Text = "Add";
+            this.addAreaToNodeButton.UseVisualStyleBackColor = true;
+            this.addAreaToNodeButton.Click += new System.EventHandler(this.addAreaToNodeButton_Click);
             // 
             // areaUpDown
             // 
@@ -364,35 +377,31 @@
             this.areaUpDown.Size = new System.Drawing.Size(60, 20);
             this.areaUpDown.TabIndex = 7;
             // 
-            // addAreaToNodeButton
+            // areasList
             // 
-            this.addAreaToNodeButton.Enabled = false;
-            this.addAreaToNodeButton.Location = new System.Drawing.Point(69, 149);
-            this.addAreaToNodeButton.Name = "addAreaToNodeButton";
-            this.addAreaToNodeButton.Size = new System.Drawing.Size(65, 20);
-            this.addAreaToNodeButton.TabIndex = 8;
-            this.addAreaToNodeButton.Text = "Add";
-            this.addAreaToNodeButton.UseVisualStyleBackColor = true;
-            this.addAreaToNodeButton.Click += new System.EventHandler(this.addAreaToNodeButton_Click);
+            this.areasList.FormattingEnabled = true;
+            this.areasList.Location = new System.Drawing.Point(5, 60);
+            this.areasList.Name = "areasList";
+            this.areasList.Size = new System.Drawing.Size(129, 82);
+            this.areasList.TabIndex = 6;
             // 
-            // areasLabel
+            // invisbileNodeCheckBox
             // 
-            this.areasLabel.AutoSize = true;
-            this.areasLabel.Location = new System.Drawing.Point(5, 41);
-            this.areasLabel.Name = "areasLabel";
-            this.areasLabel.Size = new System.Drawing.Size(37, 13);
-            this.areasLabel.TabIndex = 9;
-            this.areasLabel.Text = "Areas:";
+            this.invisbileNodeCheckBox.AutoSize = true;
+            this.invisbileNodeCheckBox.Location = new System.Drawing.Point(4, 4);
+            this.invisbileNodeCheckBox.Name = "invisbileNodeCheckBox";
+            this.invisbileNodeCheckBox.Size = new System.Drawing.Size(133, 17);
+            this.invisbileNodeCheckBox.TabIndex = 0;
+            this.invisbileNodeCheckBox.Text = "Invisible Routing Node";
+            this.invisbileNodeCheckBox.UseVisualStyleBackColor = true;
+            this.invisbileNodeCheckBox.CheckedChanged += new System.EventHandler(this.invisbileNodeCheckBox_CheckedChanged);
             // 
-            // addAreaButton
+            // exportJSONToolStripMenuItem
             // 
-            this.addAreaButton.Location = new System.Drawing.Point(12, 115);
-            this.addAreaButton.Name = "addAreaButton";
-            this.addAreaButton.Size = new System.Drawing.Size(186, 44);
-            this.addAreaButton.TabIndex = 6;
-            this.addAreaButton.Text = "Add Area";
-            this.addAreaButton.UseVisualStyleBackColor = true;
-            this.addAreaButton.Click += new System.EventHandler(this.addAreaButton_Click);
+            this.exportJSONToolStripMenuItem.Name = "exportJSONToolStripMenuItem";
+            this.exportJSONToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exportJSONToolStripMenuItem.Text = "Export JSON";
+            this.exportJSONToolStripMenuItem.Click += new System.EventHandler(this.exportJSONToolStripMenuItem_Click);
             // 
             // mainForm
             // 
@@ -414,14 +423,14 @@
             this.itemsPanel.PerformLayout();
             this.infoPanel.ResumeLayout(false);
             this.configurationPanel.ResumeLayout(false);
-            this.nodesPanel.ResumeLayout(false);
-            this.nodesPanel.PerformLayout();
-            this.roadsPanel.ResumeLayout(false);
-            this.roadsPanel.PerformLayout();
             this.areasPanel.ResumeLayout(false);
             this.areasPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.costUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trafficUpDown)).EndInit();
+            this.roadsPanel.ResumeLayout(false);
+            this.roadsPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.costUpDown)).EndInit();
+            this.nodesPanel.ResumeLayout(false);
+            this.nodesPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.areaUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -462,6 +471,7 @@
         private System.Windows.Forms.Button addAreaToNodeButton;
         private System.Windows.Forms.NumericUpDown areaUpDown;
         private System.Windows.Forms.Button addAreaButton;
+        private System.Windows.Forms.ToolStripMenuItem exportJSONToolStripMenuItem;
     }
 }
 

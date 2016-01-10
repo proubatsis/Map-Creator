@@ -33,6 +33,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace Map_Creator
 {
@@ -280,7 +282,7 @@ namespace Map_Creator
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                List<List<Tuple<int,int,int>>> adjacencyList = buildAdjacencyList();
+                List<List<MapAdjacency>> adjacencyList = buildAdjacencyList();
 
                 System.IO.StreamWriter writer = new System.IO.StreamWriter(dialog.FileName);
 
@@ -324,7 +326,7 @@ namespace Map_Creator
                         if (j > 0) writer.Write(" ");
 
                         //Write the adjacency list: destination index, cost, invisible flag
-                        writer.Write(String.Format("{0:N0} {1:N0} {2}", adjacencyList[i][j].Item1, adjacencyList[i][j].Item2, adjacencyList[i][j].Item3 == 1 ? "I" : "-"));
+                        writer.Write(String.Format("{0:N0} {1:N0} {2}", adjacencyList[i][j].destinationIndex, adjacencyList[i][j].cost, adjacencyList[i][j].invisible ? "I" : "-"));
                     }
                     writer.WriteLine();
                 }
@@ -356,16 +358,19 @@ namespace Map_Creator
         //The first integer in the tuple is the index to the
         //destination node, the second integer is the cost, the third integer
         //indicates whether it is an invisible road (0 = No, 1 = Yes).
-        private List<List<Tuple<int,int,int>>> buildAdjacencyList()
+        private List<List<MapAdjacency>> buildAdjacencyList()
         {
-            List<List<Tuple<int,int,int>>> adj = new List<List<Tuple<int,int,int>>>();
+            List<List<MapAdjacency>> adj = new List<List<MapAdjacency>>();
             for (int i = 0; i < nodes.Count; i++)
-                adj.Add(new List<Tuple<int, int, int>>());
+                adj.Add(new List<MapAdjacency>());
 
             foreach (MapRoad road in roads)
             {
-                adj[road.a.index].Add(new Tuple<int, int, int>(road.b.index, road.getCost(), road.invisible ? 1 : 0));
-                adj[road.b.index].Add(new Tuple<int, int, int>(road.a.index, road.getCost(), road.invisible ? 1 : 0));
+                //adj[road.a.index].Add(new Tuple<int, int, int>(road.b.index, road.getCost(), road.invisible ? 1 : 0));
+                //adj[road.b.index].Add(new Tuple<int, int, int>(road.a.index, road.getCost(), road.invisible ? 1 : 0));
+
+                adj[road.a.index].Add(new MapAdjacency(road.b.index, road.getCost(), road.invisible));
+                adj[road.b.index].Add(new MapAdjacency(road.a.index, road.getCost(), road.invisible));
             }
 
             return adj;
@@ -450,6 +455,9 @@ namespace Map_Creator
             areas[currentlySelectedTreeNode.Index].trafficCost = (int)trafficUpDown.Value;
         }
 
-
+        private void exportJSONToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }
