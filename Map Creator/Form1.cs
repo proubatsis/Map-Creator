@@ -366,9 +366,6 @@ namespace Map_Creator
 
             foreach (MapRoad road in roads)
             {
-                //adj[road.a.index].Add(new Tuple<int, int, int>(road.b.index, road.getCost(), road.invisible ? 1 : 0));
-                //adj[road.b.index].Add(new Tuple<int, int, int>(road.a.index, road.getCost(), road.invisible ? 1 : 0));
-
                 adj[road.a.index].Add(new MapAdjacency(road.b.index, road.getCost(), road.invisible));
                 adj[road.b.index].Add(new MapAdjacency(road.a.index, road.getCost(), road.invisible));
             }
