@@ -184,79 +184,34 @@ namespace Map_Creator
             mapPanel.Invalidate();
         }
 
-        //Load the map data from a text file
+        //Load the map data from a json file
         private void mapToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Filter = "Text Files (*.txt)|*.txt";
+            dialog.Filter = "JSON Files (*.json)|*.json";
 
-            if (dialog.ShowDialog() != DialogResult.OK) return;
-
-            areas = new List<MapArea>();
-            nodes = new List<MapNode>();
-            roads = new List<MapRoad>();
-
-            System.IO.StreamReader reader = new System.IO.StreamReader(dialog.FileName);
-
-            //Load all the areas
-            int areaCount = int.Parse(reader.ReadLine());
-            for (int i = 0; i < areaCount; i++)
+            if (dialog.ShowDialog() == DialogResult.OK)
             {
-                //Add an area initialized with an index and traffic cost
-                areas.Add(new MapArea(i, int.Parse(reader.ReadLine())));
-                infoTreeView.Nodes[MAP_AREAS_INDEX].Nodes.Add(Convert.ToString(i));
+                StreamReader reader = new StreamReader(dialog.FileName);
+
+                MapData data = JsonConvert.DeserializeObject<MapData>(reader.ReadToEnd());
+                reader.Close();
+
+                this.nodes = data.nodes;
+                this.areas = data.areas;
+                this.roads = adjacencyListToRoads(data.adjacencies, data.nodes);
+
+                foreach (MapNode node in this.nodes)
+                    infoTreeView.Nodes[MAP_NODES_INDEX].Nodes.Add(node.ToString());
+
+                foreach (MapRoad road in this.roads)
+                    infoTreeView.Nodes[MAP_ROADS_INDEX].Nodes.Add(road.ToString());
+
+                foreach (MapArea area in this.areas)
+                    infoTreeView.Nodes[MAP_AREAS_INDEX].Nodes.Add(area.ToString());
+
+                mapPanel.Invalidate();
             }
-
-            //Load all the nodes
-            int nodeCount = int.Parse(reader.ReadLine());
-            for (int i = 0; i < nodeCount; i++)
-            {
-                String name = reader.ReadLine();
-
-                String[] coordStr = reader.ReadLine().Split(' ');
-                int x = int.Parse(coordStr[0]), y = int.Parse(coordStr[1]);
-
-                MapNode node = new MapNode(name, x, y, i);
-
-                //Get all the areas that the node belongs to.
-                //A string with value "-" means that the nodes does not belong to an area.
-                String[] nodeAreasStr = reader.ReadLine().Split(' ');
-                for (int j = 0; j < nodeAreasStr.Length; j++)
-                    if (nodeAreasStr[j] != "-") node.areas.Add(int.Parse(nodeAreasStr[j]));
-
-                //Check for the invisible flag "I", if it exists make the
-                //node an invisible routing node.
-                node.invisible = reader.ReadLine().Contains('I');
-
-                //Store the node and display it in the tree view
-                nodes.Add(node);
-                infoTreeView.Nodes[MAP_NODES_INDEX].Nodes.Add(name);
-            }
-
-            //Load all the roads (stored as an adjacency list)
-            for (int i = 0; i < nodeCount; i++)
-            {
-                String[] tokens = reader.ReadLine().Split(' ');
-
-                //Each adjacency is stored in the format: destination index, cost, flags.
-                //The source index is the integer 'i' in the outer loop.
-                for (int j = 0; j < tokens.Length; j += 3)
-                {
-                    int destIndex = int.Parse(tokens[j]);
-                    if (destIndex < i) continue;
-
-                    MapRoad road = new MapRoad(nodes[i], nodes[destIndex]);
-                    road.cost = int.Parse(tokens[j + 1]);
-                    road.invisible = tokens[j + 2].Contains('I');
-
-                    //Store the road and display it in the tree view
-                    roads.Add(road);
-                    infoTreeView.Nodes[MAP_ROADS_INDEX].Nodes.Add(road.a.name + " -> " + road.b.name);
-                }
-            }
-
-            reader.Close();
-            mapPanel.Invalidate();
         }
 
         //Allow the user to choose an image file to base the map on.
@@ -273,64 +228,22 @@ namespace Map_Creator
             }
         }
 
-        //Export the map data to a text file. It can be opened by "Map Route Finder" or
+        //Export the map data to a json file. It can be opened by "Map Route Finder" or
         //opened again by this application (via File->Open->Map) to edit it.
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog dialog = new SaveFileDialog();
-            dialog.Filter = "Text Files (*.txt)|*.txt";
+            dialog.Filter = "JSON Files (*.json)|*.json";
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                List<List<MapAdjacency>> adjacencyList = buildAdjacencyList();
+                MapData data = new MapData();
+                data.nodes = nodes;
+                data.areas = areas;
+                data.adjacencies = buildAdjacencyList();
 
-                System.IO.StreamWriter writer = new System.IO.StreamWriter(dialog.FileName);
-
-                //Write the area data
-                writer.WriteLine(areas.Count);
-                foreach (MapArea area in areas)
-                    writer.WriteLine(area.trafficCost);
-
-                //Write the node data
-                writer.WriteLine(nodes.Count.ToString());
-                foreach (MapNode node in nodes)
-                {
-                    //Write node name
-                    writer.WriteLine(node.name);
-
-                    //Write node coordinates
-                    writer.WriteLine(String.Format("{0:N0} {1:N0}", node.x, node.y));
-
-                    //Write areas that the nodes are in
-                    if (node.areas.Count > 0)
-                    {
-                        for (int i = 0; i < node.areas.Count; i++)
-                        {
-                            if (i > 0) writer.Write(" ");
-                            writer.Write(node.areas[i]);
-                        }
-                    }
-                    else writer.Write("-"); //Node is not part of an area
-                    writer.WriteLine();
-
-                    //Write a flag to indicate whether or not the node is invsibile
-                    if (node.invisible) writer.WriteLine("I");
-                    else writer.WriteLine("-");
-                }
-
-                //Write the adjacencies
-                for(int i = 0; i < adjacencyList.Count; i++)
-                {
-                    for (int j = 0; j < adjacencyList[i].Count; j++)
-                    {
-                        if (j > 0) writer.Write(" ");
-
-                        //Write the adjacency list: destination index, cost, invisible flag
-                        writer.Write(String.Format("{0:N0} {1:N0} {2}", adjacencyList[i][j].destIndex, adjacencyList[i][j].cost, adjacencyList[i][j].invisible ? "I" : "-"));
-                    }
-                    writer.WriteLine();
-                }
-
+                StreamWriter writer = new StreamWriter(dialog.FileName);
+                writer.Write(JsonConvert.SerializeObject(data));
                 writer.Close();
             }
         }
@@ -474,50 +387,13 @@ namespace Map_Creator
 
         private void exportJSONToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveFileDialog dialog = new SaveFileDialog();
-            dialog.Filter = "JSON Files (*.json)|*.json";
-
-            if(dialog.ShowDialog() == DialogResult.OK)
-            {
-                MapData data = new MapData();
-                data.nodes = nodes;
-                data.areas = areas;
-                data.adjacencies = buildAdjacencyList();
-
-                StreamWriter writer = new StreamWriter(dialog.FileName);
-                writer.Write(JsonConvert.SerializeObject(data));
-                writer.Close();
-            }
+            
             
         }
 
         private void importJSONToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Filter = "JSON Files (*.json)|*.json";
-
-            if(dialog.ShowDialog() == DialogResult.OK)
-            {
-                StreamReader reader = new StreamReader(dialog.FileName);
-
-                MapData data = JsonConvert.DeserializeObject<MapData>(reader.ReadToEnd());
-                reader.Close();
-
-                this.nodes = data.nodes;
-                this.areas = data.areas;
-                this.roads = adjacencyListToRoads(data.adjacencies, data.nodes);
-
-                foreach (MapNode node in this.nodes)
-                    infoTreeView.Nodes[MAP_NODES_INDEX].Nodes.Add(node.ToString());
-
-                foreach (MapRoad road in this.roads)
-                    infoTreeView.Nodes[MAP_ROADS_INDEX].Nodes.Add(road.ToString());
-
-                foreach (MapArea area in this.areas)
-                    infoTreeView.Nodes[MAP_AREAS_INDEX].Nodes.Add(area.ToString());
-
-                mapPanel.Invalidate();
-            }
+            
         }
     }
 }

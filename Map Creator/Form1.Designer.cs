@@ -60,8 +60,6 @@
             this.areaUpDown = new System.Windows.Forms.NumericUpDown();
             this.areasList = new System.Windows.Forms.ListBox();
             this.invisbileNodeCheckBox = new System.Windows.Forms.CheckBox();
-            this.exportJSONToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.importJSONToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.topMenuStrip.SuspendLayout();
             this.itemsPanel.SuspendLayout();
             this.infoPanel.SuspendLayout();
@@ -90,8 +88,6 @@
             this.newToolStripMenuItem,
             this.openToolStripMenuItem,
             this.saveToolStripMenuItem,
-            this.importJSONToolStripMenuItem,
-            this.exportJSONToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -116,14 +112,14 @@
             // mapToolStripMenuItem
             // 
             this.mapToolStripMenuItem.Name = "mapToolStripMenuItem";
-            this.mapToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.mapToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.mapToolStripMenuItem.Text = "Map";
             this.mapToolStripMenuItem.Click += new System.EventHandler(this.mapToolStripMenuItem_Click);
             // 
             // imageToolStripMenuItem
             // 
             this.imageToolStripMenuItem.Name = "imageToolStripMenuItem";
-            this.imageToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.imageToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.imageToolStripMenuItem.Text = "Image";
             this.imageToolStripMenuItem.Click += new System.EventHandler(this.imageToolStripMenuItem_Click);
             // 
@@ -398,20 +394,6 @@
             this.invisbileNodeCheckBox.UseVisualStyleBackColor = true;
             this.invisbileNodeCheckBox.CheckedChanged += new System.EventHandler(this.invisbileNodeCheckBox_CheckedChanged);
             // 
-            // exportJSONToolStripMenuItem
-            // 
-            this.exportJSONToolStripMenuItem.Name = "exportJSONToolStripMenuItem";
-            this.exportJSONToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.exportJSONToolStripMenuItem.Text = "Export JSON";
-            this.exportJSONToolStripMenuItem.Click += new System.EventHandler(this.exportJSONToolStripMenuItem_Click);
-            // 
-            // importJSONToolStripMenuItem
-            // 
-            this.importJSONToolStripMenuItem.Name = "importJSONToolStripMenuItem";
-            this.importJSONToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.importJSONToolStripMenuItem.Text = "Import JSON";
-            this.importJSONToolStripMenuItem.Click += new System.EventHandler(this.importJSONToolStripMenuItem_Click);
-            // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -480,8 +462,6 @@
         private System.Windows.Forms.Button addAreaToNodeButton;
         private System.Windows.Forms.NumericUpDown areaUpDown;
         private System.Windows.Forms.Button addAreaButton;
-        private System.Windows.Forms.ToolStripMenuItem exportJSONToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem importJSONToolStripMenuItem;
     }
 }
 
