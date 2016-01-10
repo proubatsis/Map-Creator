@@ -7,13 +7,13 @@ namespace Map_Creator
 {
     class MapAdjacency
     {
-        public int destinationIndex;
+        public int destIndex;
         public int cost;
         public bool invisible;
 
         public MapAdjacency(int dest, int cost, bool invisible)
         {
-            this.destinationIndex = dest;
+            this.destIndex = dest;
             this.cost = cost;
             this.invisible = invisible;
         }

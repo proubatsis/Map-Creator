@@ -326,7 +326,7 @@ namespace Map_Creator
                         if (j > 0) writer.Write(" ");
 
                         //Write the adjacency list: destination index, cost, invisible flag
-                        writer.Write(String.Format("{0:N0} {1:N0} {2}", adjacencyList[i][j].destinationIndex, adjacencyList[i][j].cost, adjacencyList[i][j].invisible ? "I" : "-"));
+                        writer.Write(String.Format("{0:N0} {1:N0} {2}", adjacencyList[i][j].destIndex, adjacencyList[i][j].cost, adjacencyList[i][j].invisible ? "I" : "-"));
                     }
                     writer.WriteLine();
                 }
