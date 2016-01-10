@@ -61,6 +61,7 @@
             this.areasList = new System.Windows.Forms.ListBox();
             this.invisbileNodeCheckBox = new System.Windows.Forms.CheckBox();
             this.exportJSONToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importJSONToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.topMenuStrip.SuspendLayout();
             this.itemsPanel.SuspendLayout();
             this.infoPanel.SuspendLayout();
@@ -89,6 +90,7 @@
             this.newToolStripMenuItem,
             this.openToolStripMenuItem,
             this.saveToolStripMenuItem,
+            this.importJSONToolStripMenuItem,
             this.exportJSONToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -403,6 +405,13 @@
             this.exportJSONToolStripMenuItem.Text = "Export JSON";
             this.exportJSONToolStripMenuItem.Click += new System.EventHandler(this.exportJSONToolStripMenuItem_Click);
             // 
+            // importJSONToolStripMenuItem
+            // 
+            this.importJSONToolStripMenuItem.Name = "importJSONToolStripMenuItem";
+            this.importJSONToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.importJSONToolStripMenuItem.Text = "Import JSON";
+            this.importJSONToolStripMenuItem.Click += new System.EventHandler(this.importJSONToolStripMenuItem_Click);
+            // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -472,6 +481,7 @@
         private System.Windows.Forms.NumericUpDown areaUpDown;
         private System.Windows.Forms.Button addAreaButton;
         private System.Windows.Forms.ToolStripMenuItem exportJSONToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem importJSONToolStripMenuItem;
     }
 }
 

@@ -373,6 +373,26 @@ namespace Map_Creator
             return adj;
         }
 
+        private List<MapRoad> adjacencyListToRoads(List<List<MapAdjacency>> adjacencies, List<MapNode> nodes)
+        {
+            List<MapRoad> roads = new List<MapRoad>();
+
+            for (int i = 0; i < adjacencies.Count; i++)
+            {
+                for(int j = 0; j < adjacencies[i].Count; j++)
+                {
+                    if (adjacencies[i][j].destIndex < i) continue; //Don't duplicate roads
+
+                    MapRoad road = new MapRoad(nodes[i], nodes[adjacencies[i][j].destIndex]);
+                    road.cost = adjacencies[i][j].cost;
+                    road.invisible = adjacencies[i][j].invisible;
+
+                    roads.Add(road);
+                }
+            }
+            return roads;
+        }
+
         //Adds an area to the map. It's values can be modified by selecting
         //the area in the tree view.
         private void addAreaButton_Click(object sender, EventArgs e)
@@ -469,6 +489,35 @@ namespace Map_Creator
                 writer.Close();
             }
             
+        }
+
+        private void importJSONToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "JSON Files (*.json)|*.json";
+
+            if(dialog.ShowDialog() == DialogResult.OK)
+            {
+                StreamReader reader = new StreamReader(dialog.FileName);
+
+                MapData data = JsonConvert.DeserializeObject<MapData>(reader.ReadToEnd());
+                reader.Close();
+
+                this.nodes = data.nodes;
+                this.areas = data.areas;
+                this.roads = adjacencyListToRoads(data.adjacencies, data.nodes);
+
+                foreach (MapNode node in this.nodes)
+                    infoTreeView.Nodes[MAP_NODES_INDEX].Nodes.Add(node.ToString());
+
+                foreach (MapRoad road in this.roads)
+                    infoTreeView.Nodes[MAP_ROADS_INDEX].Nodes.Add(road.ToString());
+
+                foreach (MapArea area in this.areas)
+                    infoTreeView.Nodes[MAP_AREAS_INDEX].Nodes.Add(area.ToString());
+
+                mapPanel.Invalidate();
+            }
         }
     }
 }
