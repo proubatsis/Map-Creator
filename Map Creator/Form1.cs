@@ -386,15 +386,5 @@ namespace Map_Creator
             areas[currentlySelectedTreeNode.Index].trafficCost = (int)trafficUpDown.Value;
         }
 
-        private void exportJSONToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            
-            
-        }
-
-        private void importJSONToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            
-        }
     }
 }
